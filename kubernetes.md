@@ -8,5 +8,44 @@ En esta sección vamos a crear una arquitectura de la siguiente manera:<br/>
 * **API Gateway** es un cuarto servicio por que es accedido por medio de una url; obtiene la posición de los vehículos del servicio anterior
 * **Front** en un extremo del flujo tenemos la vista desarrollada en Angular y que se utiliza en un navegador web
 
-Habiendo descrito la arquitectura de nuestro sistema empezamos por desplegar el corazón del sistema, que en este caso es la cola (Active Mq), tenemos entonces el siguiente archivo yml:<br/>
+Habiendo descrito la arquitectura de nuestro sistema empezamos por desplegar el corazón del sistema, que en este caso es la cola (Active Mq), tenemos entonces el siguiente archivo _mq-deploy.yml_:<br/>
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: queue
+spec:
+  selector:
+    matchLabels:
+      app: queue
+  template:
+    metadata:
+      labels:
+        app: queue
+    spec:
+      containers:
+        - name: whatever
+          image: richardchesterwood/k8s-fleetman-queue:release1
+  replicas: 1
+```
+
+Y su respectivo servicio _mq-service.yml_:<br/>
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mq-service
+spec:
+  selector:
+    app: queue
+  ports:
+    - name: http
+      port: 8161
+      nodePort: 30010
+    - name: endpoint
+      port: 61616
+  type: NodePort
+```
 
