@@ -8,6 +8,8 @@ En esta sección vamos a crear una arquitectura de la siguiente manera:<br/>
 * **API Gateway** es un cuarto servicio por que es accedido por medio de una url; obtiene la posición de los vehículos del servicio anterior
 * **Front** en un extremo del flujo tenemos la vista desarrollada en Angular y que se utiliza en un navegador web
 
+##### Active Mq
+
 Habiendo descrito la arquitectura de nuestro sistema empezamos por desplegar el corazón del sistema, que en este caso es la cola (Active Mq), tenemos entonces el siguiente archivo _mq-deploy.yml_:<br/>
 
 ```yaml
@@ -49,3 +51,6 @@ spec:
   type: NodePort
 ```
 
+##### Position Simulator
+
+El siguiente servicio a desplegar es el simulador de posición, 
