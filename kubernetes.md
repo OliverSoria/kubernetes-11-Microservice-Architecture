@@ -38,7 +38,7 @@ Y su respectivo servicio _mq-service.yml_:<br/>
 apiVersion: v1
 kind: Service
 metadata:
-  name: mq-service
+  name: fleetman-queue
 spec:
   selector:
     app: queue
