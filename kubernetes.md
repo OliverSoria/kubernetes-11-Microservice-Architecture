@@ -53,4 +53,30 @@ spec:
 
 ##### Position Simulator
 
-El siguiente servicio a desplegar es el simulador de posición, 
+El siguiente servicio a desplegar es el simulador de posición, y lo haremos por medio de un _Deployment_:</br>
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: position-simulator
+spec:
+  selector:
+    matchLabels:
+      app: position-simulator
+  template:
+    metadata:
+      labels:
+        app: position-simulator
+    spec:
+      containers:
+        - name: whatever
+          image: richardchesterwood/k8s-fleetman-position-simulator:release1
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: production-microservice
+  replicas: 1
+```
+
+Para efectos prácticos, hemos establecido que exista una sola réplica y además hace su aparición la etiqueta _env_, que nos permite definir variables de entorno, en este caso el perfil activo.</br>
+
