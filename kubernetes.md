@@ -50,10 +50,11 @@ spec:
       port: 61616
   type: NodePort
 ```
+**Nota:** es muy importante tener en cuenta que el nombre del servicio, ya que de lo contrario el simulador de posición no lo va a encontrar.<br/>
 
 ##### Position Simulator
 
-El siguiente servicio a desplegar es el simulador de posición, y lo haremos por medio de un _Deployment_:</br>
+El siguiente servicio a desplegar es el simulador de posición, y lo haremos por medio de un _Deployment_:<br/>
 
 ```yaml
 apiVersion: apps/v1
@@ -78,5 +79,11 @@ spec:
   replicas: 1
 ```
 
-Para efectos prácticos, hemos establecido que exista una sola réplica y además hace su aparición la etiqueta _env_, que nos permite definir variables de entorno, en este caso el perfil activo.</br>
+Para efectos prácticos, hemos establecido que exista una sola réplica y además hace su aparición la etiqueta _env_, que nos permite definir variables de entorno, en este caso el perfil activo.<br/>
+
+##### Tracker Simulator
+
+El tercer servicio tiene la función de procesar los mensajes que se han depositado en la cola por el simulador de posociones, y lo haremos por medio de un _deployment_:<br/>
+
+
 
