@@ -85,5 +85,61 @@ Para efectos prácticos, hemos establecido que exista una sola réplica y ademá
 
 El tercer servicio tiene la función de procesar los mensajes que se han depositado en la cola por el simulador de posociones, y lo haremos por medio de un _deployment_:<br/>
 
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: position-tracker
+spec:
+  selector:
+    matchLabels:
+      app: position-tracker
+  template:
+    metadata:
+      labels:
+        app: position-tracker
+    spec:
+      containers:
+        - name: position-tracker
+          image: richardchesterwood/k8s-fleetman-position-tracker:release1
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: production-microservice
+  replicas: 1
+```
+
+En esta ocasión vamos a utilizar un servicio para el simulador de rastreo, que nos permitirá obtener la posición de los vehículos en formato XML vía web:<br/>
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-position-tracker
+spec:
+  selector:
+    app: position-tracker
+  ports:
+    - name: http
+      port: 8080
+      nodePort: 30020
+  type: NodePort
+```
+
+Sin embargo, la realidad es que no es necesario tener acceso desde el exterior al servicio, por lo tanto en lugar de declararlo como un _NodePort_ lo podemos declarar como un _ClusterIP_, cabe mencionar que si se hace esto, tambien se debe eliminar la línea que define el _nodePort_, ya que de lo contrario no funcionará. Con estos cambios el cluster tendra cominicación con otros clusters, pero no hacía el exterior.<br/>
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-position-tracker
+spec:
+  selector:
+    app: position-tracker
+  ports:
+    - name: http
+      port: 8080
+  type: ClusterIP
+```
+
 
 
