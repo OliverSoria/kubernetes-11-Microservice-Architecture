@@ -182,6 +182,34 @@ spec:
       port: 8080
   type: ClusterIP
 ```
+##### Webapp
+
+Esta sección finaliza con el despliegue del _front_, el cual está hecho en _Angular_, así que empezamos con el _deployment_:<br/>
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+        - name: webapp
+          image: richardchesterwood/k8s-fleetman-webapp-angular:release1
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: production-microservice
+  replicas: 1
+```
+
+Y dado que es un componente con el cual el usuario interactuará directamente procedemos a agregar su respectivo servicio:<br/>
 
 
 
