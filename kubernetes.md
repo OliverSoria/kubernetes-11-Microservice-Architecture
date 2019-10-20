@@ -140,6 +140,49 @@ spec:
       port: 8080
   type: ClusterIP
 ```
+##### API Gateway
+
+No hay mucho que decir al respecto de este componente, sigue la misma línea que el anterior, tenemos el _deployment_:<br/>
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: richardchesterwood/k8s-fleetman-api-gateway:release1
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: production-microservice
+  replicas: 1
+```
+
+Y respecto al servicio, se usará también un _ClusterIP_  similar al del paso anterior:<br/>
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-api-gateway
+spec:
+  selector:
+    app: api-gateway
+  ports:
+    - name: http
+      port: 8080
+  type: ClusterIP
+```
+
 
 
 
